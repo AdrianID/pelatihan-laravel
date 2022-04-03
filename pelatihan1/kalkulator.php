@@ -61,6 +61,29 @@ class Kalkulator
         $this->totalBaterai += 20;
         echo "Sekarang baterai anda $this->totalBaterai%" . PHP_EOL;
     }
+
+    function tampilHasil($hasil){ // function untuk menampilkan hasil
+        if ($hasil !== false) {
+            echo "Hasil perhitungan : $hasil" . PHP_EOL;
+        }
+    }
+    
+    
+    function inputBilanganUser($hasilTerakhir){ // function get data dari user
+        if ($hasilTerakhir == null) {
+            echo "Bilangan 1 : ";
+            $input_bil_pertama = fopen("php://stdin", "r");
+            $bil_pertama = (int)trim(fgets($input_bil_pertama));
+        } else{
+            $bil_pertama = $hasilTerakhir;
+            echo "Hasil Sebelumnya: ".$bil_pertama.PHP_EOL;
+        }
+        echo "Bilangan 2 : ";
+        $input_bil_kedua = fopen("php://stdin", "r");
+        $bil_kedua = (int)trim(fgets($input_bil_kedua));
+    
+        return array($bil_pertama,$bil_kedua);
+    }
 }
 
 
@@ -85,7 +108,6 @@ function KelasKalkulatorHemat()
 
 // ----------------------------------------------------------------------
 
-
 function limit(int $hasil) // Function untuk membatasi sebuah hasil
 {
     if($hasil > 1000000){
@@ -97,11 +119,7 @@ function limit(int $hasil) // Function untuk membatasi sebuah hasil
 }
 
 
-function tampilHasil($hasil){ // function untuk menampilkan hasil
-    if ($hasil !== false) {
-        echo "Hasil perhitungan : $hasil" . PHP_EOL;
-    }
-}
+
 
 
 function prosesOperasi($kalkulator) // function proses
@@ -117,44 +135,39 @@ function prosesOperasi($kalkulator) // function proses
         echo "5. Perpangkatan" . PHP_EOL;
         echo "6. isi Daya" . PHP_EOL;
         echo "7. Keluar" . PHP_EOL;
-        echo "Operasi : ".PHP_EOL;
+        echo "Operasi : ";
         $input_operasi = fopen("php://stdin", "r");
         $operasi = trim(fgets($input_operasi));
 
-        if ($operasi == '6') {
+        
+        if($operasi == '1'){
+            $arrayInput = $kalkulator->inputBilanganUser($hasilTerakhir);
+            $hasilTerakhir = $kalkulator->penambahan($arrayInput[0], $arrayInput[1]);
+            $kalkulator->tampilHasil($hasilTerakhir);
+        }else if($operasi == '2'){
+            $arrayInput = $kalkulator->inputBilanganUser($hasilTerakhir);
+            $hasilTerakhir = $kalkulator->pengurangan($arrayInput[0], $arrayInput[1]);
+            $kalkulator->tampilHasil($hasilTerakhir);
+        }else if($operasi == '3'){
+            $arrayInput = $kalkulator->inputBilanganUser($hasilTerakhir);
+            $hasilTerakhir = $kalkulator->perkalian($arrayInput[0], $arrayInput[1]);
+            $kalkulator->tampilHasil($hasilTerakhir);
+        }else if($operasi == '4'){
+            $arrayInput = $kalkulator->inputBilanganUser($hasilTerakhir);
+            $hasilTerakhir = $kalkulator->pembagian($arrayInput[0], $arrayInput[1]);
+            $kalkulator->tampilHasil($hasilTerakhir);
+        }else if($operasi == '5'){
+            $arrayInput = $kalkulator->inputBilanganUser($hasilTerakhir);
+            $hasilTerakhir = $kalkulator->perpangkatan($arrayInput[0], $arrayInput[1]);
+            $kalkulator->tampilHasil(limit($hasilTerakhir));
+        }else if ($operasi == '6') {
             $kalkulator->isiDaya();
             continue;
         }else if($operasi == '7'){
             exit();
-        }
-
-        if ($hasilTerakhir == null) {
-            echo "Bilangan 1 : ";
-            $input_bil_pertama = fopen("php://stdin", "r");
-            $bil_pertama = (int)trim(fgets($input_bil_pertama));
-        } else
-            $bil_pertama = $hasilTerakhir;
-
-        echo "Bilangan 2 : ";
-        $input_bil_kedua = fopen("php://stdin", "r");
-        $bil_kedua = (int)trim(fgets($input_bil_kedua));
-
-
-        if($operasi == '1'){
-            $hasilTerakhir = $kalkulator->penambahan($bil_pertama, $bil_kedua);
-            tampilHasil($hasilTerakhir);
-        }else if($operasi == '2'){
-            $hasilTerakhir = $kalkulator->pengurangan($bil_pertama, $bil_kedua);
-            tampilHasil($hasilTerakhir);
-        }else if($operasi == '3'){
-            $hasilTerakhir = $kalkulator->perkalian($bil_pertama, $bil_kedua);
-            tampilHasil($hasilTerakhir);
-        }else if($operasi == '4'){
-            $hasilTerakhir = $kalkulator->pembagian($bil_pertama, $bil_kedua);
-            tampilHasil($hasilTerakhir);
-        }else if($operasi == '5'){
-            $hasilTerakhir = $kalkulator->perpangkatan($bil_pertama, $bil_kedua);
-            tampilHasil(limit($hasilTerakhir));
+        }else{
+            echo "Operasi yang anda pilih tidak ada!!!".PHP_EOL;
+            continue;
         }
     }
 }
