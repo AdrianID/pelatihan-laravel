@@ -2,7 +2,7 @@
 
 class Kalkulator
 {
-    public int $totalBaterai;
+    protected int $totalBaterai;
     protected int $dayaPakaiBaterai = 10;
 
     public function __construct()
@@ -11,15 +11,15 @@ class Kalkulator
     }
     public function __destruct()
     {
-        echo PHP_EOL . "---------- Program telah berakhir ----------" . PHP_EOL;
+        echo PHP_EOL . "---------- Program telah berakhir ----------" . PHP_EOL . PHP_EOL;
     }
 
     // Function validasi 
     // jika sisa baterai kurang dari penggunaan baterai, user diminta untuk isi daya
-    function validasiProses(int $result){
+    protected function validasiProses(int $result){
         if ($this->totalBaterai - $this->dayaPakaiBaterai < 0) {
-            echo "Sisa baterai anda $this->totalBaterai%, Membutuhkan $this->dayaPakaiBaterai% baterai untuk menjalankan proses ini. ". PHP_EOL 
-            ."Segera isi daya baterai anda!!!" . PHP_EOL;
+            echo PHP_EOL."Sisa baterai anda $this->totalBaterai%, Membutuhkan $this->dayaPakaiBaterai% baterai untuk menjalankan proses ini. ". PHP_EOL 
+            ."Segera isi daya baterai anda!!!" . PHP_EOL . PHP_EOL;
             return false;
         }else{
             $this->totalBaterai -= $this->dayaPakaiBaterai;
@@ -29,54 +29,54 @@ class Kalkulator
 
     // ---------- Function Proses Perhitungan -----------------
 
-    function penambahan(int $number1, int $number2)
+    public function penambahan(int $number1, int $number2)
     {
         return $this->validasiProses($number1 + $number2);
     }
 
-    function pengurangan(int $number1, int $number2)
+    public function pengurangan(int $number1, int $number2)
     {
         return $this->validasiProses($number1 - $number2);
     }
 
-    function perkalian(int $number1, int $number2)
+    public function perkalian(int $number1, int $number2)
     {
         return $this->validasiProses($number1 * $number2);
     }
 
-    function pembagian(int $number1, int $number2)
+    public function pembagian(int $number1, int $number2)
     {
         return $this->validasiProses($number1 / $number2);
     }
 
-    function perpangkatan(int $number1, int $number2)
+    public function perpangkatan(int $number1, int $number2)
     {
         return $this->validasiProses(pow($number1, $number2));
     }
 
     // --------------------------------------------------------
 
-    function isiDaya()
+    public function isiDaya()
     {
         $this->totalBaterai += 20;
-        echo "Sekarang baterai anda $this->totalBaterai%" . PHP_EOL;
+        echo PHP_EOL."Sekarang baterai anda $this->totalBaterai%" . PHP_EOL .PHP_EOL;
     }
 
-    function tampilHasil($hasil){ // function untuk menampilkan hasil
+    public function tampilHasil($hasil){ // function untuk menampilkan hasil
         if ($hasil !== false) {
-            echo "Hasil perhitungan : $hasil" . PHP_EOL;
+            echo "Hasil perhitungan : $hasil" . PHP_EOL . PHP_EOL;
         }
     }
     
     
-    function inputBilanganUser($hasilTerakhir){ // function get data dari user
+    public function inputBilanganUser($hasilTerakhir){ // function get data dari user
         if ($hasilTerakhir == null) {
-            echo "Bilangan 1 : ";
+            echo PHP_EOL."Bilangan 1 : ";
             $input_bil_pertama = fopen("php://stdin", "r");
             $bil_pertama = (int)trim(fgets($input_bil_pertama));
         } else{
             $bil_pertama = $hasilTerakhir;
-            echo "Hasil Sebelumnya: ".$bil_pertama.PHP_EOL;
+            echo PHP_EOL."Hasil Sebelumnya: ".$bil_pertama.PHP_EOL;
         }
         echo "Bilangan 2 : ";
         $input_bil_kedua = fopen("php://stdin", "r");
@@ -111,7 +111,7 @@ function KelasKalkulatorHemat()
 function limit(int $hasil) // Function untuk membatasi sebuah hasil
 {
     if($hasil > 1000000){
-        echo "Nilai diluar batas yang ditentukan" . PHP_EOL;
+        echo PHP_EOL . "Nilai diluar batas yang ditentukan" . PHP_EOL . PHP_EOL;
         return $hasil = 0;
     }else{
         return $hasil;
@@ -166,13 +166,13 @@ function prosesOperasi($kalkulator) // function proses
         }else if($operasi == '7'){
             exit();
         }else{
-            echo "Operasi yang anda pilih tidak ada!!!".PHP_EOL;
+            echo PHP_EOL."Operasi yang anda pilih tidak ada!!!".PHP_EOL.PHP_EOL;
             continue;
         }
     }
 }
 
-
+start:
 echo "------- Pilih Jenis Kalkulator -------" . PHP_EOL;
 echo "1. Kalkulator" . PHP_EOL;
 echo "2. Kalkulator Hemat" . PHP_EOL;
@@ -180,10 +180,12 @@ echo "Kalkulator : ";
 $input_tipe_kalkulator = fopen("php://stdin", "r");
 $tipe_kalkulator = trim(fgets($input_tipe_kalkulator));
 
+
 if ($tipe_kalkulator == "1") {
     KelasKalkulator();
 } elseif ($tipe_kalkulator == "2") {
     KelasKalkulatorHemat();
 } else {
-    echo "Tipe kalkulator yang anda pilih tidak ada!!!";
+    echo PHP_EOL. "Tipe kalkulator yang anda pilih tidak ada!!!" .PHP_EOL.PHP_EOL;
+    goto start;    
 }
