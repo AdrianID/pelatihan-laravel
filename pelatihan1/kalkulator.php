@@ -169,6 +169,19 @@ function prosesOperasi($kalkulator) // function proses
             echo PHP_EOL."Operasi yang anda pilih tidak ada!!!".PHP_EOL.PHP_EOL;
             continue;
         }
+
+        // Decision dengan kondisi variable HasilTerakhir !== false 
+        // artinya bila function validasiBaterai mereturn false artinya baterai tidak cukup untuk melakukan proses.
+        // Jadi tak perlu menampilkan interaksi user dibawah ini
+        if($hasilTerakhir !== false){ 
+            echo "Apakah ingin melanjutkan proses? (y/n) ";
+            $input_perulangan_proses = fopen("php://stdin", "r");
+            $perulangan_proses = trim(fgets($input_perulangan_proses));
+            if($perulangan_proses == 'n'){
+                $hasilTerakhir = null;
+            }
+        }
+        
     }
 }
 
